@@ -43,7 +43,19 @@ package 'zlib1g-dev' do
   action :install
 end
 
+package 'leiningen' do
+  action :install
+end
+
 execute 'install riemann-tools' do
   command 'gem install --no-ri --no-rdoc riemann-tools'
   action :run
+end
+
+template '/tmp/riemann-0.3.1/etc/riemann.config' do
+  source 'riemann.config.erb'
+  owner 'vagrant'
+  group 'vagrant'
+  mode '0664'
+  action :create
 end
