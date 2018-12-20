@@ -7,10 +7,6 @@
 riemann_version = '0.3.1'
 apt_update 'update'
 
-package 'wget' do
-  action :install
-end
-
 package 'openjdk-8-jre' do
   action :install
 end
@@ -53,9 +49,17 @@ execute 'install riemann-tools' do
 end
 
 template '/tmp/riemann-0.3.1/etc/riemann.config' do
-  source 'riemann.config.erb'
+  source 'riemann.sample.async.clj'
   owner 'vagrant'
   group 'vagrant'
   mode '0664'
+  action :create
+end
+
+template '/etc/hostname' do
+  source 'hostname'
+  owner 'root'
+  group 'root'
+  mode '644'
   action :create
 end
