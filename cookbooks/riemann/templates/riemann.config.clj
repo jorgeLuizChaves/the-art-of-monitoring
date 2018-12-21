@@ -36,12 +36,14 @@
       ; specific fields
       ; #(info (:host %) (:service %))
       ; Print "output", then the event
-        #(prn "STDOUT: " %)
+      ; #(prn "STDOUT: " %)
       ; (where (and (service "disk /") (> metric 0.01))
       ;   #(info "Disk space on / is over 10%!" %))
 
       ; filters can be used to 
-
+      ; (where (service "^riemann.*")
+      ;   #(info "riemannA" %))
+        #(info %)
       ; Log expired events.
       (expired
         (fn [event] (info "expired" event))))))

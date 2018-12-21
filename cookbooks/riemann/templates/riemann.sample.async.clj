@@ -25,13 +25,13 @@
 
 (let [index (index)
 ; Each batch is sent when 100 events or 1/10th of a second has passed
-    downstream (batch 100 1/10 
+    downstream (batch 10 1/10 
         (async-queue! :agg {    
             :queue-size 1e3
             :core-pool-size 4
             :max-pool-size  32}
             (forward
-                (riemann.client/tcp-client :host "riemannmc"))))]
+                (riemann.client/tcp-client :host "riemannmc" :port 5555))))]
 
     (streams
         (default :ttl 60

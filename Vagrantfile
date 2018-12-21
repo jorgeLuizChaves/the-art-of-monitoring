@@ -23,11 +23,22 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "riemannB" do |riemannB|
     riemannB.vm.box = "bento/ubuntu-18.10"
-    riemannB.vm.network "private_network", ip: "10.10.0.4"
+    riemannB.vm.network "private_network", ip: "10.20.0.4"
     riemannB.vm.provision "chef_solo" do |chef|
       chef.add_recipe "riemann::provisioning"
     end
   end
+
+  config.vm.define "riemannmc" do |riemannmc|
+    riemannmc.vm.box = "bento/ubuntu-18.10"
+    riemannmc.vm.network "private_network", ip: "10.30.0.4"
+    riemannmc.vm.provision "chef_solo" do |chef|
+      # chef.add_recipe "riemann::provisioning"
+      chef.add_recipe "riemann::missioncontrol"
+    end
+  end
+
+
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs

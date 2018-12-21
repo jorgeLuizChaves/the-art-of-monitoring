@@ -15,6 +15,7 @@ execute "download riemann #{riemann_version}" do
   command "wget https://github.com/riemann/riemann/releases/download/#{riemann_version}/riemann-#{riemann_version}.tar.bz2 --no-check-certificate"
   cwd "/tmp"
   action :run
+  not_if "ls /tmp/riemann-#{riemann_version}.tar.bz2"
 end
 
 execute "extract riemann #{riemann_version}" do
@@ -56,8 +57,8 @@ template '/tmp/riemann-0.3.1/etc/riemann.config' do
   action :create
 end
 
-template '/etc/hostname' do
-  source 'hostname'
+template '/etc/hosts' do
+  source 'hosts'
   owner 'root'
   group 'root'
   mode '644'
