@@ -64,3 +64,9 @@ template '/etc/hosts' do
   mode '644'
   action :create
 end
+
+git '/tmp' do
+  repository 'https://github.com/samn/riemann-syntax-check.git'
+  revision 'revision'
+  action :sync
+end

@@ -31,4 +31,10 @@ custom fields
 
 
 
+reload riemann in repl 
+user=> (riemann.bin/reload!) or sudo service riemann reload
+
+riemann doesn't let you do bullship, keeps old configuration
+
+
 

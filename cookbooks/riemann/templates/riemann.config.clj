@@ -43,7 +43,9 @@
       ; filters can be used to 
       ; (where (service "^riemann.*")
       ;   #(info "riemannA" %))
-        #(info %)
+      ; #(info %)
+      (where (host #"^riemanna.*")
+              #(info "vai" %))
       ; Log expired events.
       (expired
         (fn [event] (info "expired" event))))))

@@ -1,0 +1,12 @@
+## Alternatives to Riemann
+- Apache Samza and Apache Kafka — A distributed real-time computation system and a publish-subscribe messaging system with a cluster-centric design.
+- Prometheus — Prometheus is an open-source systems monitoring and alerting toolkit originally built at SoundCloud.
+- Heron - Heron is realtime analytics platform developed by Twitter.
+- Bosun — An open-source, MIT-licensed, monitoring and alerting system built by Stack Exchange.
+- Anthracite — An event and change logging and management application.
+- The ELK Stack — Elasticsearch, Logstash, Kibana. A powerful logging tool that can also be adapted to handle events and metrics. We'll look at it more closely in Chapter 8.
+- Heka — Another logging tool, this one released by the Mozilla team. Sadly, no longer maintained. There is a potential successor called Hindsight.
+- Godot — An event streamer modeled on Riemann but rewritten in node.js. Instead of Clojure, it's written in Javascript. It's somewhat slower than Riemann but shares many concepts.
+- Ganglia — A monitoring tool with a focus on clusters and grids.
+- Munin — A popular metric and monitoring tool that uses RRDTool.
+- Snap - Open source by Intel, Snap is a telemetry collection and processing tool. It also supports publishing data to Riemann.

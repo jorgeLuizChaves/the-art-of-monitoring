@@ -18,6 +18,7 @@ Vagrant.configure("2") do |config|
     riemannA.vm.network "private_network", ip: "10.10.0.3"
     riemannA.vm.provision "chef_solo" do |chef|
       chef.add_recipe "riemann::provisioning"
+      chef.add_recipe "riemann::email-notification"
     end
   end
 
@@ -33,7 +34,7 @@ Vagrant.configure("2") do |config|
     riemannmc.vm.box = "bento/ubuntu-18.10"
     riemannmc.vm.network "private_network", ip: "10.30.0.4"
     riemannmc.vm.provision "chef_solo" do |chef|
-      # chef.add_recipe "riemann::provisioning"
+      chef.add_recipe "riemann::provisioning"
       chef.add_recipe "riemann::missioncontrol"
     end
   end

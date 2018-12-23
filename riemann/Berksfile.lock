@@ -1,0 +1,7 @@
+DEPENDENCIES
+  riemann
+    path: .
+    metadata: true
+
+GRAPH
+  riemann (0.1.0)
