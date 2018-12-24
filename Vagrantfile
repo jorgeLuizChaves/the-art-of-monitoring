@@ -17,8 +17,8 @@ Vagrant.configure("2") do |config|
     riemannA.vm.box = "bento/ubuntu-18.10"
     riemannA.vm.network "private_network", ip: "10.10.0.3"
     riemannA.vm.provision "chef_solo" do |chef|
-      chef.add_recipe "riemann::provisioning"
-      chef.add_recipe "riemann::email-notification"
+      chef.add_recipe "graphite::default"
+      # chef.add_recipe "riemann::email-notification"
     end
   end
 
@@ -37,6 +37,16 @@ Vagrant.configure("2") do |config|
       chef.add_recipe "riemann::provisioning"
       chef.add_recipe "riemann::missioncontrol"
     end
+  end
+
+  config.vm.define "gocd" do |gocd|
+    gocd.vm.box = "bento/ubuntu-18.10"
+    gocd.vm.network "private_network", ip: "10.10.0.5"
+    gocd.vm.network "forwarded_port", guest: 8153, host: 8153
+    # gocd.vm.provision "chef_solo" do |chef|
+    #   chef.add_recipe "riemann::provisioning"
+    #   chef.add_recipe "riemann::missioncontrol"
+    # end
   end
 
 

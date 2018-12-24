@@ -39,17 +39,18 @@
                 (default :ttl 60
                 index
 
-                ; #(info %)
+                #(info %)
 
-                (where (service #"^riemann.*")
-                    downstream)))
+                ; (where (service #"^riemann.*")
+                    ; downstream))
+                ))
             
-            (streams
-                (default :ttl 60
-                index
-                #(prn "sending email: " %)
-                (where (service #"^riemann.*")
-                    #(prn email %))))
+            ; (streams
+            ;     (default :ttl 60
+            ;     index
+            ;     #(prn "sending email: " %)
+            ;     (where (service #"^riemann.*")
+            ;         #(prn email %))))
         )
 
         (tests

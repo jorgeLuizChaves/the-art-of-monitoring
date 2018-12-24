@@ -65,8 +65,8 @@ template '/etc/hosts' do
   action :create
 end
 
-git '/tmp' do
-  repository 'https://github.com/samn/riemann-syntax-check.git'
-  revision 'revision'
-  action :sync
-end
+# git '/tmp' do
+#   repository 'https://github.com/samn/riemann-syntax-check.git'
+#   revision 'revision'
+#   action :sync
+# end
