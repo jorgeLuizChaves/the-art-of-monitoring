@@ -40,6 +40,27 @@ package 'graphite-api' do
   action :install
 end
 
+execute 'grafana-repository' do
+  command 'echo "deb https://packagecloud.io/grafana/stable/debian/ stretch main" >> /etc/apt/sources.list'
+  action :run
+  only_if "cat /etc/apt/sources.list | grep grafana"
+end
+
+execute 'name' do
+  command 'curl https://packagecloud.io/gpg.key | sudo apt-key add -'
+  action :run
+end
+
+apt_update 'update' do
+  ignore_failure true
+  action :update
+end
+
+package 'grafana' do
+  action :install
+end
+
+
 
 
 
