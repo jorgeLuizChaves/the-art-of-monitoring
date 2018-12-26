@@ -23,8 +23,9 @@ execute 'name' do
 end
 
 execute 'name' do
-  command 'sh -c "echo deb https://packagecloud.io/exoscale/community/ubuntu/ trusty main > /etc/apt/sources.list.d/exoscale_community.list"'
+  command 'echo "deb https://packagecloud.io/exoscale/community/ubuntu/ trusty main" >> /etc/apt/sources.list.d/exoscale_community.list'
   action :run
+  not_if "ls /etc/apt/sources.list.d/exoscale_community.list"
 end
 
 package 'apt-transport-https' do
@@ -36,14 +37,27 @@ apt_update 'update' do
   action :update
 end
 
+package 'gunicorn3' do
+  action :install
+end
+
 package 'graphite-api' do
   action :install
 end
 
+template '/etc/graphite-api.yaml' do
+  source 'graphite-api.yaml'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+
 execute 'grafana-repository' do
   command 'echo "deb https://packagecloud.io/grafana/stable/debian/ stretch main" >> /etc/apt/sources.list'
   action :run
-  only_if "cat /etc/apt/sources.list | grep grafana"
+  not_if "cat /etc/apt/sources.list | grep grafana"
 end
 
 execute 'name' do
@@ -59,6 +73,74 @@ end
 package 'grafana' do
   action :install
 end
+
+package 'python-pip' do
+  action :install
+end
+
+
+template '/etc/carbon/carbon.conf' do
+  source 'carbon.conf.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  action :create
+end
+
+template '/etc/carbon/storage-schemas.conf' do
+  source 'storage-schemas.conf.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  action :create
+end
+
+template '/var/lib/graphite/api_search_index' do
+  source 'api_search_index'
+  owner '_graphite'
+  group '_graphite'
+  mode '0755'
+  action :create
+end
+
+template '/etc/init.d/carbon-cache' do
+  source 'carbon-cache'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+template '/etc/init.d/carbon-relay' do
+  source 'carbon-relay'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+template '/etc/default/graphite-carbon' do
+  source 'graphite-carbon'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+template 'lib/systemd/system/graphite-api.service' do
+  source 'graphite-api.service'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+execute 'sudo update-rc.d carbon-cache defaults'
+
+execute 'sudo update-rc.d carbon-relay defaults'
+
+
+
 
 
 

@@ -49,6 +49,15 @@ Vagrant.configure("2") do |config|
     # end
   end
 
+  config.vm.define "graphite" do |graphite|
+    graphite.vm.box = "bento/ubuntu-18.10"
+    graphite.vm.network "private_network", ip: "10.10.0.10"
+    graphite.vm.provision "chef_solo" do |chef|
+      chef.add_recipe "graphite::default"
+      # chef.add_recipe "riemann::email-notification"
+    end
+  end
+
 
 
   # Disable automatic box update checking. If you disable this, then
