@@ -2,6 +2,7 @@
 ; vim: filetype=clojure
 (require 'riemann.client)
 (require '[examplecom.etc.email :refer :all])
+(require '[examplecom.etc.graphite :refer :all])
 
 (logging/init {:file "riemann.log"})
 
@@ -40,7 +41,7 @@
                 index
 
                 #(info %)
-
+                graph
                 ; (where (service #"^riemann.*")
                     ; downstream))
                 ))

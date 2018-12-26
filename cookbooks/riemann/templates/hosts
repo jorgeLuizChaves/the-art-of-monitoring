@@ -8,3 +8,4 @@ ff02::2 ip6-allrouter
 10.10.0.3 riemanna
 10.20.0.4 riemannb
 10.30.0.4 riemannmc
+10.10.0.10 graphitea

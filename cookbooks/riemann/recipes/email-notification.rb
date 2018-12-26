@@ -18,4 +18,3 @@ template '/tmp/riemann-0.3.1/examplecom/etc/email.clj' do
   mode '0755'
   action :create
 end
-

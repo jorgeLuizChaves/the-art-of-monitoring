@@ -53,7 +53,6 @@ template '/etc/graphite-api.yaml' do
   action :create
 end
 
-
 execute 'grafana-repository' do
   command 'echo "deb https://packagecloud.io/grafana/stable/debian/ stretch main" >> /etc/apt/sources.list'
   action :run
@@ -127,13 +126,31 @@ template '/etc/default/graphite-carbon' do
   action :create
 end
 
-template 'lib/systemd/system/graphite-api.service' do
+template '/lib/systemd/system/graphite-api.service' do
   source 'graphite-api.service'
   owner 'root'
   group 'root'
   mode '0755'
   action :create
 end
+
+template '/etc/grafana/grafana.ini' do
+  source 'grafana.ini'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+template '/etc/grafana/ldap.toml' do
+  source 'ldap.toml'
+  owner 'root'
+  group '3'
+  mode '0755'
+  action :create
+end
+
+
 
 execute 'sudo update-rc.d carbon-cache defaults'
 
