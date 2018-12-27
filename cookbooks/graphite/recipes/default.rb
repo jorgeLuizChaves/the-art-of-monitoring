@@ -79,7 +79,7 @@ end
 
 
 template '/etc/carbon/carbon.conf' do
-  source 'carbon.conf.erb'
+  source 'carbon.conf'
   owner 'root'
   group 'root'
   mode '0644'
@@ -126,26 +126,26 @@ template '/etc/default/graphite-carbon' do
   action :create
 end
 
-template '/lib/systemd/system/graphite-api.service' do
-  source 'graphite-api.service'
-  owner 'root'
-  group 'root'
-  mode '0755'
-  action :create
-end
+# template '/lib/systemd/system/graphite-api.service' do
+#   source 'graphite-api.service'
+#   owner 'root'
+#   group 'root'
+#   mode '0755'
+#   action :create
+# end
 
 template '/etc/grafana/grafana.ini' do
   source 'grafana.ini'
   owner 'root'
   group 'root'
-  mode '0755'
+  mode '0644'
   action :create
 end
 
 template '/etc/grafana/ldap.toml' do
   source 'ldap.toml'
   owner 'root'
-  group '3'
+  group 'root'
   mode '0755'
   action :create
 end
