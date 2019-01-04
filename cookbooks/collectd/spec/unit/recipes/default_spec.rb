@@ -7,6 +7,14 @@
 require 'spec_helper'
 
 describe 'collectd::default' do
+
+  context 'When all necessary to run collectd is OK' do
+    describe directory('/etc/collectd/collectd.d') do
+      
+    end
+    
+  end
+
   context 'When all attributes are default, on Ubuntu 16.04' do
     let(:chef_run) do
       # for a complete list of available platforms and versions see:
