@@ -1,0 +1,40 @@
+reload Riemann
+(riemann.bin/reload!)
+
+connect to riemann repl
+lein repl :connect 127.0.0.1:5557
+
+riemann health
+riemann-health --host riemann.example.com
+
+streams
+; regex
+(where (service #"^nginx"))
+
+boolean operators
+(where (and (tagged "www") (state "ok")))
+
+tagged == tagged-all
+
+tagged-any
+(tagged-any ["www" "app1"]
+  #(info %))
+
+complex matching
+(where (and (tagged "www") (state "ok") (service #"^apache*")))
+
+custom fields
+(:field_name event)
+
+
+(operator (:field_name event) value)
+
+
+
+reload riemann in repl 
+user=> (riemann.bin/reload!) or sudo service riemann reload
+
+riemann doesn't let you do bullship, keeps old configuration
+
+
+
