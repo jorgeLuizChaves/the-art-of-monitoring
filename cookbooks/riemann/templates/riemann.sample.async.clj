@@ -3,6 +3,7 @@
 (require 'riemann.client)
 (require '[examplecom.etc.email :refer :all])
 (require '[examplecom.etc.graphite :refer :all])
+(require '[examplecom.etc.collectd :refer :all])
 
 (logging/init {:file "riemann.log"})
 
@@ -35,13 +36,16 @@
                     :max-pool-size  32}
                     (forward
                         (riemann.client/tcp-client :host "riemannmc" :port 5555))))]
+            
+            (tagged "collectd"
+                (smap rewrite-service graph))
 
             (streams
                 (default :ttl 60
                 index
-
-                #(info %)
-                graph
+                (tagged "collectd"  #(info %))
+                ; #(info %)
+                ; graph
                 ; (where (service #"^riemann.*")
                     ; downstream))
                 ))

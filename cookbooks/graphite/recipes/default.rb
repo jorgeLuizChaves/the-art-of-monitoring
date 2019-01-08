@@ -69,17 +69,16 @@ apt_update 'update' do
   action :update
 end
 
-package 'grafana' do
-  action :install
-end
-
 package 'python-pip' do
   action :install
 end
 
+package 'grafana' do
+  action :install
+end
 
 template '/etc/carbon/carbon.conf' do
-  source 'carbon.conf'
+  source 'carbon.conf.erb'
   owner 'root'
   group 'root'
   mode '0644'
@@ -126,13 +125,21 @@ template '/etc/default/graphite-carbon' do
   action :create
 end
 
-# template '/lib/systemd/system/graphite-api.service' do
-#   source 'graphite-api.service'
-#   owner 'root'
-#   group 'root'
-#   mode '0755'
-#   action :create
-# end
+template '/lib/systemd/system/graphite-api.service' do
+  source 'graphite-api.service'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+template '/lib/systemd/system/graphite-api.socket' do
+  source 'graphite-api.socket'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
 
 template '/etc/grafana/grafana.ini' do
   source 'grafana.ini'
@@ -150,13 +157,82 @@ template '/etc/grafana/ldap.toml' do
   action :create
 end
 
+service 'grafana-server' do
+  action :stop
+end
 
+service 'carbon-cache' do
+  action :stop
+end
+
+service 'carbon-relay' do
+  action :stop
+end
+
+service 'grafana' do
+  action :stop
+end
+
+service 'graphite-api' do
+  action :stop
+end
 
 execute 'sudo update-rc.d carbon-cache defaults'
 
 execute 'sudo update-rc.d carbon-relay defaults'
 
+execute 'sudo update-rc.d grafana-server defaults'
 
+execute 'sudo update-rc.d graphite-api defaults'
+
+execute 'name' do
+  command 'sudo grafana-cli plugins install grafana-kubernetes-app'
+  action :run
+end
+
+execute 'sudo grafana-cli plugins install grafana-polystat-panel'
+
+execute 'sudo grafana-cli plugins install camptocamp-prometheus-alertmanager-datasource'
+
+execute 'sudo grafana-cli plugins install vonage-status-panel'
+
+execute 'sudo grafana-cli plugins install snuids-trafficlights-panel'
+
+execute 'sudo grafana-cli plugins install grafana-worldmap-panel'
+
+execute 'sudo grafana-cli plugins install raintank-worldping-app'
+
+execute 'sudo grafana-cli plugins install grafana-piechart-panel'
+
+execute 'sudo grafana-cli plugins install sbueringer-consul-datasource'
+
+execute 'sudo grafana-cli plugins install briangann-gauge-panel'
+
+execute 'sudo grafana-cli plugins install ayoungprogrammer-finance-datasource'
+
+execute 'sudo grafana-cli plugins install savantly-heatmap-panel'
+
+execute 'sudo grafana-cli plugins install mtanda-histogram-panel'
+
+execute 'sudo grafana-cli plugins install digiapulssi-organisations-panel'
+
+execute 'sudo grafana-cli plugins install snuids-radar-panel'
+
+service 'grafana-server' do
+  action :restart
+end
+
+service 'carbon-cache' do
+  action :restart
+end
+
+service 'carbon-relay' do
+  action :restart
+end
+
+service 'graphite-api' do
+  action :restart
+end
 
 
 

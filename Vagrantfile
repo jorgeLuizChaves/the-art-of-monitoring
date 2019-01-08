@@ -13,20 +13,23 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
 
-  config.vm.define "riemannA" do |riemannA|
-    riemannA.vm.box = "bento/ubuntu-18.10"
-    riemannA.vm.network "private_network", ip: "10.10.0.3"
-    riemannA.vm.provision "chef_solo" do |chef|
+  config.vm.define "riemanna" do |riemanna|
+    riemanna.vm.box = "bento/ubuntu-18.10"
+    riemanna.vm.network "private_network", ip: "10.10.0.3"
+    riemanna.vm.hostname = "riemanna"
+    riemanna.vm.provision "chef_solo" do |chef|
       chef.add_recipe "riemann::provisioning"
       chef.add_recipe "riemann::graphite-integration"
       chef.add_recipe "riemann::email-notification"
+      chef.add_recipe "collectd::default"
     end
   end
 
-  config.vm.define "riemannB" do |riemannB|
-    riemannB.vm.box = "bento/ubuntu-18.10"
-    riemannB.vm.network "private_network", ip: "10.20.0.4"
-    riemannB.vm.provision "chef_solo" do |chef|
+  config.vm.define "riemannb" do |riemannb|
+    riemannb.vm.box = "bento/ubuntu-18.10"
+    riemannb.vm.network "private_network", ip: "10.20.0.4"
+    riemannb.vm.hostname = "riemannb"
+    riemannb.vm.provision "chef_solo" do |chef|
       chef.add_recipe "riemann::provisioning"
     end
   end
@@ -34,6 +37,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "riemannmc" do |riemannmc|
     riemannmc.vm.box = "bento/ubuntu-18.10"
     riemannmc.vm.network "private_network", ip: "10.30.0.4"
+    riemannmc.vm.hostname = "riemannmc"
     riemannmc.vm.provision "chef_solo" do |chef|
       chef.add_recipe "riemann::provisioning"
       chef.add_recipe "riemann::missioncontrol"
@@ -44,6 +48,17 @@ Vagrant.configure("2") do |config|
     gocd.vm.box = "bento/ubuntu-18.10"
     gocd.vm.network "private_network", ip: "10.10.0.5"
     gocd.vm.network "forwarded_port", guest: 8153, host: 8153
+    gocd.vm.hostname = "gocd"
+    # gocd.vm.provision "chef_solo" do |chef|
+    #   chef.add_recipe "riemann::provisioning"
+    #   chef.add_recipe "riemann::missioncontrol"
+    # end
+  end
+
+  config.vm.define "openldap" do |openldap|
+    openldap.vm.box = "bento/ubuntu-18.10"
+    openldap.vm.network "private_network", ip: "10.10.0.9"
+    openldap.vm.hostname = "openldap"
     # gocd.vm.provision "chef_solo" do |chef|
     #   chef.add_recipe "riemann::provisioning"
     #   chef.add_recipe "riemann::missioncontrol"
@@ -53,6 +68,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "graphite" do |graphite|
     graphite.vm.box = "bento/ubuntu-18.10"
     graphite.vm.network "private_network", ip: "10.10.0.10"
+    graphite.vm.hostname = "graphite"
     graphite.vm.provision "chef_solo" do |chef|
       chef.add_recipe "graphite::default"
       # chef.add_recipe "riemann::email-notification"
