@@ -16,16 +16,15 @@ package 'curl' do
   action :install
 end
 
-
-execute 'name' do
-  command 'curl https://packagecloud.io/gpg.key | apt-key add -'
-  action :run
-end
-
 execute 'name' do
   command 'echo "deb https://packagecloud.io/exoscale/community/ubuntu/ trusty main" >> /etc/apt/sources.list.d/exoscale_community.list'
   action :run
   not_if "ls /etc/apt/sources.list.d/exoscale_community.list"
+end
+
+execute 'name' do
+  command 'curl https://packagecloud.io/gpg.key | apt-key add -'
+  action :run
 end
 
 package 'apt-transport-https' do
@@ -54,13 +53,13 @@ template '/etc/graphite-api.yaml' do
 end
 
 execute 'grafana-repository' do
-  command 'echo "deb https://packagecloud.io/grafana/stable/debian/ stretch main" >> /etc/apt/sources.list'
+  command 'echo "deb https://packages.grafana.com/oss/deb stable main" >> /etc/apt/sources.list.d/grafana.list'
   action :run
-  not_if "cat /etc/apt/sources.list | grep grafana"
+  not_if "cat /etc/apt/sources.list.d/grafana.list | grep grafana"
 end
 
 execute 'name' do
-  command 'curl https://packagecloud.io/gpg.key | sudo apt-key add -'
+  command 'curl https://packages.grafana.com/gpg.key | sudo apt-key add -'
   action :run
 end
 

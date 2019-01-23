@@ -25,6 +25,15 @@ Vagrant.configure("2") do |config|
     end
   end
 
+  config.vm.define "logstash" do |logstash|
+    logstash.vm.box = "bento/ubuntu-18.10"
+    logstash.vm.network "private_network", ip: "10.20.0.8"
+    logstash.vm.hostname = "logstash"
+    logstash.vm.provision "chef_solo" do |chef|
+      chef.add_recipe "logstash::default"
+    end
+  end
+
   config.vm.define "riemannb" do |riemannb|
     riemannb.vm.box = "bento/ubuntu-18.10"
     riemannb.vm.network "private_network", ip: "10.20.0.4"

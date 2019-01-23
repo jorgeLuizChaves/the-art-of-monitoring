@@ -4,6 +4,7 @@
 (require '[examplecom.etc.email :refer :all])
 (require '[examplecom.etc.graphite :refer :all])
 (require '[examplecom.etc.collectd :refer :all])
+(require '[examplecom.etc.slack :refer :all])
 
 (logging/init {:file "riemann.log"})
 
@@ -37,15 +38,24 @@
                     (forward
                         (riemann.client/tcp-client :host "riemannmc" :port 5555))))]
             
-            (tagged "collectd"
-                (smap rewrite-service graph))
+            ; (tagged "collectd"
+            ;     (smap rewrite-service graph))
 
             (streams
                 (default :ttl 60
                 index
-                (tagged "collectd"  #(info %))
+                ; (tagged "collectd"  #(info %))
                 ; #(info %)
                 ; graph
+                ; {:host riemanna, :service cpu/percent-user
+                 
+                    (where 
+                        (and 
+                            (service "cpu/percent-user") 
+                            (> metric 80)) 
+                        (rollup 2 360 (slacker)))
+                    
+                ; (slacker)
                 ; (where (service #"^riemann.*")
                     ; downstream))
                 ))
