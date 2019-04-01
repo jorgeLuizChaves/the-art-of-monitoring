@@ -1,0 +1,42 @@
+sudo apt-get install -y libcairo2-dev \
+                          libffi-dev \
+                          pkg-config \
+                          python-dev \
+                          python-pip \
+                          virtualenv \
+                          fontconfig \
+                          apache2 \
+                          libapache2-mod-wsgi \
+                          memcached \
+                          librrd-dev \
+                          libldap2-dev \
+                          libsasl2-dev \
+                          git-core \
+                          gcc
+
+sudo virtualenv /opt/graphite
+export PATH=/opt/graphite/bin:$PATH
+cd /usr/local/src
+sudo git clone https://github.com/graphite-project/whisper.git
+cd whisper
+sudo git checkout 0.9.15
+sudo -E python setup.py install
+
+cd /usr/local/src
+sudo git clone https://github.com/graphite-project/carbon.git
+cd carbon
+sudo git checkout 0.9.15
+$sudo -E pip install -r requirements.txt
+sudo -E python setup.py install
+
+cd /usr/local/src
+sudo git clone https://github.com/graphite-project/graphite-web.git
+cd graphite-web
+sudo git checkout 0.9.15
+sudo -E pip install -r requirements.txt
+sudo -E pip install rrdtool python-ldap
+python check-dependencies.py
+sudo -E python setup.py install
+
+sudo -E PYTHONPATH=/opt/graphite/webapp \
+    django-admin.py syncdb --settings=graphite.settings

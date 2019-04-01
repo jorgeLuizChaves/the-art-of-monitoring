@@ -75,11 +75,21 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "graphite" do |graphite|
-    graphite.vm.box = "bento/ubuntu-18.10"
+    graphite.vm.box = "bento/ubuntu-16.04"
     graphite.vm.network "private_network", ip: "10.10.0.10"
     graphite.vm.hostname = "graphite"
     graphite.vm.provision "chef_solo" do |chef|
-      chef.add_recipe "graphite::default"
+      chef.add_recipe "graphite::dependencies"
+      # chef.add_recipe "riemann::email-notification"
+    end
+  end
+
+  config.vm.define "grafana" do |grafana|
+    grafana.vm.box = "bento/ubuntu-16.04"
+    grafana.vm.network "private_network", ip: "10.10.0.11"
+    grafana.vm.hostname = "graphite"
+    grafana.vm.provision "chef_solo" do |chef|
+      chef.add_recipe "grafana::provisioning"
       # chef.add_recipe "riemann::email-notification"
     end
   end

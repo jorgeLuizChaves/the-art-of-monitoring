@@ -1,0 +1,38 @@
+functional language 
+A: allow you to do computation as mathematical functions
+
+Functional language principles
+1 - reduce side effects ( no side effect in your functions )
+2 - referential transparent
+3 - be immutable
+
+(1 + 2 + 3) = pure functions
+
+why should I bother with functional programming?
+- more concise code
+- immutability reduces race conditions
+- less complex code and fewer bugs
+- code readability
+
+Martin Odersky - Scala founder
+
+"programmers like functional programming because it makes code clearer, better structured, and it prevent many classes of errors."
+
+
+why scala?
+
+- allows you to write non functional code (gradually step into the functional world)
+- created by Martin Odersky - typesafe inc
+- integration w/ Java
+
+Scala REPL -> Repeat Evaluate Print Loop
+
+Compiles and runs your lines, results stay in scope
+
+github -> https://github.com/cutajarj/FunctionalProgrammingExercises
+
+25:00
+
+
+
+

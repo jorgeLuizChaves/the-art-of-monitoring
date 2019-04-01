@@ -49,7 +49,7 @@ execute 'install riemann-tools' do
   action :run
 end
 
-template '/tmp/riemann-0.3.1/etc/riemann.config' do
+template "/tmp/#{riemann_version}/etc/riemann.config" do
   source 'riemann.sample.async.clj'
   owner 'vagrant'
   group 'vagrant'
@@ -65,8 +65,8 @@ template '/etc/hosts' do
   action :create
 end
 
-# git '/tmp' do
-#   repository 'https://github.com/samn/riemann-syntax-check.git'
-#   revision 'revision'
-#   action :sync
-# end
+git '/tmp' do
+  repository 'https://github.com/samn/riemann-syntax-check.git'
+  revision 'revision'
+  action :sync
+end

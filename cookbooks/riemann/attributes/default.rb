@@ -1,0 +1,1 @@
+node.default['riemann']['version'] = '0.3.1'

@@ -27,12 +27,6 @@ execute 'gocd-key' do
     notifies :update, 'apt_update[apt-update]', :immediately
 end
 
-apt_repository 'openjdk' do
-    uri 'http://ppa.launchpad.net/openjdk-r/ppa/ubuntu xenial main'
-    components ['main']
-    action :add
-end
-
 apt_package 'openjdk-8-jre' do
     action :install
 end
