@@ -30,11 +30,16 @@ execute 'gocd-key' do
     action :run
 end
 
-apt_update 'name' do
+apt_update 'apt-update' do
     ignore_failure true
     action :update
 end
 
+apt_repository 'openjdk' do
+    uri 'http://ppa.launchpad.net/openjdk-r/ppa/ubuntu xenial main'
+    components ['main']
+    action :add
+end
 
 apt_package %w(curl openjdk-8-jre go-server) do
     action :install

@@ -13,11 +13,6 @@ describe file('/etc/apt/sources.list.d/gocd.list') do
   its('content') { should match 'deb https://download.gocd.org /'}
 end
 
-describe apt('ppa:openjdk-r/ppa') do
-  it { should exist }
-  it { should be_enable }
-end
-
 describe package('go-server') do
   it { should be_installed }
 end
