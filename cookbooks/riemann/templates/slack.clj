@@ -13,7 +13,7 @@
   "Send notifications to Slack"
   [& {:keys [recipient]
       :or {recipient "#automate-and-monitor"}}]
-  (slack credentials {:username "Riquinho Rico"
+  (slack credentials {:username "Riemann bot"
                       :channel recipient
                       :formatter (fn [e] { :text (slack-format e) } )
                       :icon ":smile:"}))

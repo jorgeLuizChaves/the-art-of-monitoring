@@ -3,8 +3,18 @@
 # Recipe:: default
 #
 # Copyright:: 2019, The Authors, All Rights Reserved.
+
+cookbook_file '/tmp/GPG-KEY-elasticsearch' do
+    source 'GPG-KEY-elasticsearch'
+    owner 'root'
+    group 'root'
+    mode '0755'
+    action :create
+end
+
 execute 'logstash-public-key' do
-    command 'wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -'
+    command 'apt-key add GPG-KEY-elasticsearch'
+    cwd '/tmp'
     action :run
 end
 
@@ -21,20 +31,6 @@ apt_update 'update' do
     action :update
 end
 
-apt_package 'openjdk-8-jre' do
+apt_package %w(openjdk-8-jre apt-transport-https logstash) do
     action :install
 end
-
-apt_package 'apt-transport-https' do
-    action :install
-end
-
-apt_package 'logstash' do
-    action :install
-end
-
-
-
-
-
-

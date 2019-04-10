@@ -14,6 +14,10 @@ apt_package 'collectd' do
     action :install
 end
 
+service 'collectd' do
+    action :stop
+end
+
 directory '/etc/collectd.d/' do
     owner 'root'
     group 'root'
@@ -103,3 +107,8 @@ template '/etc/collectd.d/write_riemann.conf' do
 end
 
 execute 'sudo update-rc.d collectd defaults'
+
+service 'collectd' do
+    action :start
+end
+

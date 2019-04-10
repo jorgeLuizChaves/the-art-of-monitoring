@@ -17,12 +17,17 @@ apt_update 'apt-update' do
     action :update
 end
 
-apt_package 'curl' do
-    action :install
+cookbook_file '/tmp/gpg.key' do
+    source 'gpg.key'
+    owner 'root'
+    group 'root'
+    mode '0664'
+    action :create
 end
 
 execute 'add-grafana-key' do
-    command 'curl https://packages.grafana.com/gpg.key | apt-key add -'
+    command 'apt-key add gpg.key'
+    cwd '/tmp'
     action :run
 end
 
@@ -31,43 +36,15 @@ apt_update 'update' do
     action :update
 end
   
-apt_package 'python-pip' do
-    action :install
-end
-  
-apt_package 'grafana' do
+apt_package %w(curl python-pip grafana) do
     action :install
 end
 
 # execute 'sudo update-rc.d grafana-server defaults'
 
-execute 'sudo grafana-cli plugins install grafana-polystat-panel'
-
-execute 'sudo grafana-cli plugins install camptocamp-prometheus-alertmanager-datasource'
-
-execute 'sudo grafana-cli plugins install vonage-status-panel'
-
-execute 'sudo grafana-cli plugins install snuids-trafficlights-panel'
-
-execute 'sudo grafana-cli plugins install grafana-worldmap-panel'
-
-execute 'sudo grafana-cli plugins install raintank-worldping-app'
-
-execute 'sudo grafana-cli plugins install grafana-piechart-panel'
-
-execute 'sudo grafana-cli plugins install sbueringer-consul-datasource'
-
-execute 'sudo grafana-cli plugins install briangann-gauge-panel'
-
-execute 'sudo grafana-cli plugins install ayoungprogrammer-finance-datasource'
-
-execute 'sudo grafana-cli plugins install savantly-heatmap-panel'
-
-execute 'sudo grafana-cli plugins install mtanda-histogram-panel'
-
-execute 'sudo grafana-cli plugins install digiapulssi-organisations-panel'
-
-execute 'sudo grafana-cli plugins install snuids-radar-panel'
+node.default['grafana']['plugins'].each do |plugin|
+    execute "sudo grafana-cli plugins install #{plugin}"
+end 
 
 service 'grafana-server' do
   action :restart

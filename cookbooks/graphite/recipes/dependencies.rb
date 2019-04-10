@@ -81,6 +81,12 @@ execute 'enable apache server apache2-graphite' do
   action :run
 end
 
+execute 'graphite_syncdb' do
+  command 'graphite-manage syncdb --noinput'
+  action :run
+end
+
+
 service 'carbon-cache' do
   action :start
 end

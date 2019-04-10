@@ -1,8 +1,9 @@
 ; -*- mode: clojure; -*-
 ; vim: filetype=clojure
 (require 'riemann.client)
-(require '[examplecom.etc.email :refer :all])
+; (require '[examplecom.etc.email :refer :all])
 (require '[examplecom.etc.graphite :refer :all])
+(require '[examplecom.etc.checks :refer :all])
 (require '[examplecom.etc.collectd :refer :all])
 (require '[examplecom.etc.slack :refer :all])
 
@@ -45,15 +46,19 @@
                 (default :ttl 60
                 index
                 ; (tagged "collectd"  #(info %))
-                ; #(info %)
-                ; graph
+                #(info %)
+                graph
+            (by :host
+                (check_percentiles "cpu/percent-user" 10 (smap rewrite-service graph))
+                (check_threshold "cpu/percent-user" 10 folds/median 80.0 90.0 (rollup 2 360 #(info %)))
+                (check_threshold "memory/percent-used" 10 folds/median 80.0 90.0 (rollup 2 360 #(info %))))
                 ; {:host riemanna, :service cpu/percent-user
                  
-                    (where 
-                        (and 
-                            (service "cpu/percent-user") 
-                            (> metric 80)) 
-                        (rollup 2 360 (slacker)))
+                    ; (where 
+                    ;     (and 
+                    ;         (service "cpu/percent-user") 
+                    ;         (> metric 60)) 
+                    ;     (rollup 2 360 (slacker)))
                     
                 ; (slacker)
                 ; (where (service #"^riemann.*")

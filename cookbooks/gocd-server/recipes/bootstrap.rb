@@ -8,11 +8,6 @@ apt_update 'apt-update' do
     action :nothing
 end
 
-apt_package 'curl' do
-    action :install
-    notifies :update, 'apt_update[apt-update]', :before
-end
-
 template '/etc/apt/sources.list.d/gocd.list' do
     source 'gocd.list.erb'
     owner 'root'
@@ -21,18 +16,27 @@ template '/etc/apt/sources.list.d/gocd.list' do
     action :create
 end
 
+cookbook_file '/tmp/GOCD-GPG-KEY.asc' do
+    source 'GOCD-GPG-KEY.asc'
+    owner 'root'
+    group 'root'
+    mode '0755'
+    action :create
+end
+
 execute 'gocd-key' do
-    command 'curl https://download.gocd.org/GOCD-GPG-KEY.asc | apt-key add -'
+    command 'apt-key add GOCD-GPG-KEY.asc'
+    cwd '/tmp'
     action :run
-    notifies :update, 'apt_update[apt-update]', :immediately
 end
 
-apt_package 'openjdk-8-jre' do
+apt_update 'name' do
+    ignore_failure true
+    action :update
+end
+
+
+apt_package %w(curl openjdk-8-jre go-server) do
     action :install
+    notifies :update, 'apt_update[apt-update]', :before
 end
-
-apt_package 'go-server' do
-    action :install
-end
-
-

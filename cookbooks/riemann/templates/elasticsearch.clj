@@ -2,7 +2,7 @@
     (:require [riemann.elasticsearch :refer :all]))
 
 
-(def elasticsearch-url "https://search-easynvest-logs-yw4vdxtfajsqesoyeyy4af4uia.us-east-1.es.amazonaws.com:443")
+(def elasticsearch-url "localhost-address")
 (def index "gocd")
 (def index-suffix "-yyyy.MM.DD")
 (def tags ["gocd-metrics"])
