@@ -1,0 +1,58 @@
+    1  sudo apt-get install graphite-web graphite-carbon mysql-server python-mysqldb python-pymysql apache2 libapache2-mod-wsgi
+    2  sudo apt-get install apt-transport-https ssl-cert
+    3  sudo mysql -u root
+    4  sudo vi /etc/graphite/local_settings.py
+    5  graphite-manage syncdb
+    6  sudo graphite-manage syncdb
+    7  sudo vi /etc/default/graphite-carbon
+    8  sudo vi /etc/carbon/storage-schemas.conf
+    9  sudo systemctl start carbon-cache
+   10  sudo a2dissite 000-default
+   11  sudo cp /usr/share/graphite-web/apache2-graphite.conf /etc/apache2/sites-available
+   12  sudo vi /etc/apache2/sites-available/apache2-graphite.con
+   13  sudo vi /etc/apache2/sites-available/apache2-graphite.conf
+   14  sudo vi /etc/apache2/ports.conf
+   15  sudo a2ensite apache2-graphite
+   16  sudo systemctl restart apache2
+   17  hsitory | grep a2
+   18  history | grep a2
+   19  ps aux | grep carbon
+   20  history
+
+
+   https://statusengine.org/tutorials/Graphite-Grafana/
+
+CREATE USER 'graphite'@'localhost' IDENTIFIED BY 'password';
+CREATE DATABASE IF NOT EXISTS `graphite` DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+GRANT ALL PRIVILEGES ON `graphite`.* TO 'graphite'@'localhost';
+
+
+
+1  sudo apt-get install graphite-web graphite-carbon mysql-server python-mysqldb python-pymysql apache2 libapache2-mod-wsgi
+    2  sudo apt-get install apt-transport-https ssl-cert
+    3  sudo mysql -u root
+    4  sudo vi /etc/graphite/local_settings.py
+    5  graphite-manage syncdb
+    6  sudo graphite-manage syncdb
+    7  sudo vi /etc/default/graphite-carbon
+    8  sudo vi /etc/carbon/storage-schemas.conf
+    9  sudo systemctl start carbon-cache
+   10  sudo a2dissite 000-default
+   11  sudo cp /usr/share/graphite-web/apache2-graphite.conf /etc/apache2/sites-available
+   12  sudo vi /etc/apache2/sites-available/apache2-graphite.con
+   13  sudo vi /etc/apache2/sites-available/apache2-graphite.conf
+   14  sudo vi /etc/apache2/ports.conf
+   15  sudo a2ensite apache2-graphite
+   16  sudo systemctl restart apache2
+   17  hsitory | grep a2
+   18  history | grep a2
+   19  ps aux | grep carbon
+   20  history
+   21  exit
+   22  history
+
+
+   
+
+
+

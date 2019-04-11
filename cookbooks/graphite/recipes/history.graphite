@@ -1,0 +1,114 @@
+    3  sudo virtualenv /opt/graphite
+    4  cd /usr/local/src
+    5  sudo git clone https://github.com/graphite-project/whisper.git
+    6  $ cd whisper
+    7  cd whisper/
+    8  sudo git checkout 0.9.15
+    9  git tag
+   10  git branch
+   11  sudo -E python setup.py install
+   12  cd /usr/local/src
+   13  sudo git clone https://github.com/graphite-project/carbon.git
+   14  cd carbon/
+   15  sudo git checkout 0.9.15
+   16  sudo -E pip install -r requirements.txt
+   17  cd /usr/local/src/
+   18  sudo git clone https://github.com/graphite-project/graphite-web.git
+   19  cd graphite-web
+   20  sudo git checkout 0.9.15
+   21  sudo -E pip install -r requirements.txt
+   22  sudo -E pip install rrdtool python-ldap
+   23  python check-dependencies.py
+   24  sudo -E python setup.py install
+   25  cd /opt/graphite/webapp/graphite
+   26  ls
+   27  sudo -E PYTHONPATH=/opt/graphite/webapp     django-admin.py syncdb --settings=graphite.settings
+   28  cd ..
+   29  ls
+   30  cd ..
+   31  ls
+   32  cd graphite/
+   33  ls
+   34  find /opt/graphite/ -n carbon.conf
+   35  find /opt/graphite/ -name carbon.conf
+   36  find /opt -name carbon.conf
+   37  sudo find /opt -name carbon.conf
+   38  sudo find /opt -name *.conf
+   39  ls
+   40  cd examples/
+   41  ls
+   42  sudo find /etc -name *.conf
+   43  cd /etc/
+   44  ls
+   45  cd /opt/graphite/lib/
+   46  ls
+   47  history | grep carbon
+   48  history
+   49  cd /usr/local/src/carbon/
+   50  sudo -E python setup.py install
+   51  cd /opt/graphite/
+   52  ls
+   53  cd lib/carbon
+   54  ls
+   55  cd ..
+   56  cd carbon-0.9.15-py2.7.egg-info
+   57  ls
+   58  cd carbon-0.9.15-py2.7.egg-info
+   59  cd carbon
+   60  ls
+   61  cd aggregator/
+   62  ls
+   63  cd ..
+   64  ls
+   65  cd conf/
+   66  ls
+   67  cp carbon.conf.example carbon.conf
+   68  vi carbon.conf.example
+   69  vi carbon.conf
+   70  sudo vi carbon.conf
+   71  cp storage-schemas.conf.example storage-schemas.conf
+   72  sudo cp storage-schemas.conf.example storage-schemas.conf
+   73  sudo vi storage-schemas.conf
+   74  sudo cp storage-aggregation.conf.example storage-aggregation.conf
+   75  sudo vi storage-aggregation.conf
+   76  sudo /sbin/groupadd carbon
+   77  sudo groupadd carbon
+   78  useradd -c "Carbon user" -g carbon -s /bin/false carbon
+   79  sudo useradd -c "Carbon user" -g carbon -s /bin/false carbon
+   80  sudo chmod 775 /opt/graphite/storage
+   81  sudo chown www-data:carbon /opt/graphite/storage
+   82  sudo chown -R carbon /opt/graphite/storage/whisper
+   83  sudo mkdir -p /opt/graphite/storage/log/carbon-{cache,relay,aggregator}
+   84  sudo chown -R carbon:carbon /opt/graphite/storage/log
+   85  ls
+   86  cd ..
+   87  cd bin/
+   88  ls
+   89  sudo -E carbon-cache.py --instance=1 start
+   90  sudo -E ./carbon-cache.py --instance=1 start
+   91  cd /opt/graphite/webapp/graphite
+   92  sudo cp local_settings.py.example local_settings.py
+   93  vi local_settings.py
+   94  sudo vi local_settings.py
+   95  sudo chown www-data /opt/graphite/storage/log/webapp
+   96  cd /opt/graphite/conf/
+   97  ls
+   98  sudo cp graphite.wsgi.example graphite.wsgi
+   99  cp graphite.wsgi /etc/apache2/sites-available/
+  100  \sudo cp graphite.wsgi /etc/apache2/sites-available/
+  101  ls /etc/apache2/sites-available/
+  102  sudo service apache2 start
+  103  ifconfig
+  104  cat /opt/graphite/storage/carbon-cache-1.pid
+  105  $ pgrep -fl carbon
+  106  pgrep -fl carbon
+  107  netstat -nltp | grep '[27]00'
+  108  cd /opt/graphite/storage/whisper
+  109  ls
+  110  cd carbon/
+  111  ls
+  112  cd agents/
+  113  ls
+  114  cd ..
+  115  echo "test.foo 1 `date +%s`" | nc localhost 2003
+  116  history

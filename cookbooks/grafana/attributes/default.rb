@@ -1,0 +1,3 @@
+node.default['grafana']['plugins'] = ['grafana-polystat-panel', 'camptocamp-prometheus-alertmanager-datasource', 'vonage-status-panel', 'snuids-trafficlights-panel',
+'grafana-worldmap-panel', 'raintank-worldping-app', 'grafana-piechart-panel', 'sbueringer-consul-datasource', 'briangann-gauge-panel', 
+'ayoungprogrammer-finance-datasource', 'savantly-heatmap-panel', 'mtanda-histogram-panel', 'digiapulssi-organisations-panel', 'snuids-radar-panel']

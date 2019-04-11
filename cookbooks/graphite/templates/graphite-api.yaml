@@ -9,7 +9,7 @@ whisper:
     - /var/lib/graphite/whisper
 carbon:
   hosts:
-    - 127.0.0.1:7012
+    - 127.0.0.1:7102
     - 127.0.0.1:7022
   timeout: 1
   retry_delay: 15
