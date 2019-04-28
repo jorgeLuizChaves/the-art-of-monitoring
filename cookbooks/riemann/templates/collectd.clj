@@ -1,7 +1,8 @@
 (ns examplecom.etc.collectd
   (:require [clojure.tools.logging :refer :all]
             [riemann.streams :refer :all]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [clojure.walk :as walk]))
 
 (def default-services
   [{:service #"^load/load/(.*)$" :rewrite "load $1"}
@@ -24,3 +25,24 @@
 
 (def rewrite-service
   (rewrite-service-with default-services))
+
+(defn docker-attribute-map
+  "Parses labels from collectd plugin_stances" 
+  [attributes]
+  (let [instance (str/split (str/replace attributes #"^.*\[(.*)\]$" "$1") #",")]
+    (walk/keywordize-keys (into {} (for [pair instance] (apply hash-map (str/split pair #"=")))))))
+
+(defn docker-attributes
+  "check if our event has any attributes and if it does send it off to be mapped."
+  [{:keys [plugin_instance] :as event}]
+  (if-let [attributes (re-find #"^.*\[.*\]$" plugin_instance)]
+    (merge event (docker-attribute-map attributes))
+    event))
+
+  (defn parse-docker-service-host
+    "replicate our existing event parsing and rewriting of the :host and :service fields."
+    [{:keys [type type_instance plugin_instance] :as event}]
+    (let [host (re-find #"^\w+\.?\w+\.?\w+" (:plugin_instance event))
+          service (cond-> (str (:type event)) (:type_instance event)
+          (str "." (:type_instance event)))]
+            (assoc event :service service :host host)))

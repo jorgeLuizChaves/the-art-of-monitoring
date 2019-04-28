@@ -3,6 +3,12 @@
 # Recipe:: default
 #
 # Copyright:: 2018, The Authors, All Rights Reserved.
+user 'collectd' do
+    comment 'collectd monitoring'
+    system true
+    shell '/bin/false'
+    action :create
+end
 
 apt_repository 'collectd' do
     uri 'http://pkg.ci.collectd.org/deb'

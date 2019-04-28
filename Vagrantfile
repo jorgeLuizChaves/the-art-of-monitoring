@@ -57,7 +57,7 @@ Vagrant.configure("2") do |config|
     gocd.vm.box = "bento/ubuntu-18.10"
     gocd.vm.network "private_network", ip: "10.10.0.5"
     gocd.vm.network "forwarded_port", guest: 8153, host: 8153
-    riemannmc.vm.hostname = "gocd"
+    gocd.vm.hostname = "gocd"
     gocd.vm.hostname = "gocd"
     # gocd.vm.provision "chef_solo" do |chef|
     #   chef.add_recipe "riemann::provisioning"
@@ -91,6 +91,16 @@ Vagrant.configure("2") do |config|
     grafana.vm.hostname = "grafana"
     grafana.vm.provision "chef_solo" do |chef|
       chef.add_recipe "grafana::provisioning"
+      chef.add_recipe "collectd::default"
+    end
+  end
+
+  config.vm.define "docker" do |docker|
+    docker.vm.box = "bento/ubuntu-16.04"
+    docker.vm.network "private_network", ip: "10.10.0.15"
+    docker.vm.hostname = "docker"
+    docker.vm.provision "chef_solo" do |chef|
+      # chef.add_recipe "docker::default"
       chef.add_recipe "collectd::default"
     end
   end
