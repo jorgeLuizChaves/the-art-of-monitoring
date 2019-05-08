@@ -34,6 +34,24 @@ Vagrant.configure("2") do |config|
     end
   end
 
+  config.vm.define "elasticsearch" do |elasticsearch|
+    elasticsearch.vm.box = "bento/ubuntu-18.10"
+    elasticsearch.vm.network "private_network", ip: "10.30.0.2"
+    elasticsearch.vm.hostname = "elasticsearch-1"
+    elasticsearch.vm.provision "chef_solo" do |chef|
+      chef.add_recipe "elasticsearch::default"
+    end
+  end
+
+  config.vm.define "kibana" do |kibana|
+    kibana.vm.box = "bento/ubuntu-18.10"
+    kibana.vm.network "private_network", ip: "10.30.0.3"
+    kibana.vm.hostname = "kibana"
+    kibana.vm.provision "chef_solo" do |chef|
+      chef.add_recipe "kibana::default"
+    end
+  end
+
   config.vm.define "riemannb" do |riemannb|
     riemannb.vm.box = "bento/ubuntu-18.10"
     riemannb.vm.network "private_network", ip: "10.20.0.4"
@@ -59,10 +77,9 @@ Vagrant.configure("2") do |config|
     gocd.vm.network "forwarded_port", guest: 8153, host: 8153
     gocd.vm.hostname = "gocd"
     gocd.vm.hostname = "gocd"
-    # gocd.vm.provision "chef_solo" do |chef|
-    #   chef.add_recipe "riemann::provisioning"
-    #   chef.add_recipe "riemann::missioncontrol"
-    # end
+    gocd.vm.provision "chef_solo" do |chef|
+      chef.add_recipe "gocd-server::default"
+    end
   end
 
   config.vm.define "openldap" do |openldap|
@@ -100,7 +117,7 @@ Vagrant.configure("2") do |config|
     docker.vm.network "private_network", ip: "10.10.0.15"
     docker.vm.hostname = "docker"
     docker.vm.provision "chef_solo" do |chef|
-      # chef.add_recipe "docker::default"
+      chef.add_recipe "docker::default"
       chef.add_recipe "collectd::default"
     end
   end
