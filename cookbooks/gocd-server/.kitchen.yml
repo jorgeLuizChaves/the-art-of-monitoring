@@ -21,7 +21,7 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[gocd-server::bootstrap]
+      - recipe[gocd-server::default]
     verifier:
       inspec_tests:
         - test/integration/default

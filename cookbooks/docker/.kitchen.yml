@@ -14,11 +14,13 @@ verifier:
 
 platforms:
   - name: ubuntu-16.04
+    # driver:
+    #   privileged: true
   
 suites:
   - name: default
     run_list:
-      - recipe[docker::provisioning]
+      - recipe[docker::default]
     verifier:
       inspec_tests:
         - test/integration/default
