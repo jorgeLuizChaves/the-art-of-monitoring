@@ -6,8 +6,9 @@
 (require '[examplecom.etc.checks :refer :all])
 (require '[examplecom.etc.collectd :refer :all])
 (require '[examplecom.etc.slack :refer :all])
+(require '[examplecom.etc.logstash :refer :all])
 
-(logging/init {:file "riemann.log"})
+(logging/init {:file "/var/log/riemann.log"})
 
 ; Listen on the local interface over TCP (5555), UDP (5555), and websockets
 ; (5556)
@@ -40,18 +41,41 @@
                         (riemann.client/tcp-client :host "riemannmc" :port 5555))))]
             
             ; (tagged "collectd"
+            ;     (where (not (= (:plugin event) "docker")))
             ;     (smap rewrite-service graph))
+        
+        (streams
+            (default :ttl 60
+            index
+            ; (tagged "logstash_events"
+            ;     #(info %)
+            ;     logstash-send)
+            ; (tagged "collectd"
+            ;     logstash-send)
+            #(info %)
+            logstash-send
+            
+            ; (tagged "logstash_events"
+            ;     (where (not (= (:plugin event) "docker"))
+            ;         (smap rewrite-service graph))
+              
+            ;     (where (= (:plugin event) "docker")
+            ;       (smap #(assoc % :host (:plugin_instance %) :service (cond-> (str (:type %)) (:type_instance %) (str "." (:type_instance %))) )
+            ;       (smap (comp parse-docker-service-host docker-attributes rewrite-service) graph))))
+                    ))
 
-            (streams
-                (default :ttl 60
-                index
-                ; (tagged "collectd"  #(info %))
-                #(info %)
-                graph
-            (by :host
-                (check_percentiles "cpu/percent-user" 10 (smap rewrite-service graph))
-                (check_threshold "cpu/percent-user" 10 folds/median 80.0 90.0 (rollup 2 360 #(info %)))
-                (check_threshold "memory/percent-used" 10 folds/median 80.0 90.0 (rollup 2 360 #(info %))))
+            ; (streams
+            ;     (default :ttl 60
+            ;     index
+            ;     ; (tagged "collectd"  #(info %))
+            ;     #(info %)
+            ;     ; graph
+            ;     (where (= (:plugin event) "docker")
+            ;     (smap (comp parse-docker-service-host docker-attributes rewrite-service) graph))
+            ; (by :host
+            ;     (check_percentiles "cpu/percent-user" 10 (smap rewrite-service graph))
+            ;     (check_threshold "cpu/percent-user" 10 folds/median 80.0 90.0 (rollup 2 360 #(info %)))
+            ;     (check_threshold "memory/percent-used" 10 folds/median 80.0 90.0 (rollup 2 360 #(info %))))
                 ; {:host riemanna, :service cpu/percent-user
                  
                     ; (where 
@@ -63,7 +87,7 @@
                 ; (slacker)
                 ; (where (service #"^riemann.*")
                     ; downstream))
-                ))
+                ; ))
             
             ; (streams
             ;     (default :ttl 60

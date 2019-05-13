@@ -23,7 +23,7 @@ execute "download riemann #{node.default['riemann']['version']}" do
   command "wget https://github.com/riemann/riemann/releases/download/#{node.default['riemann']['version']}/riemann-#{node.default['riemann']['version']}.tar.bz2 --no-check-certificate"
   cwd "/tmp"
   action :run
-  not_if "ls /tmp/riemann-#{node.default['riemann']['version']}.tar.bz2"
+  not_if "ls /usr/bin/riemann-#{node.default['riemann']['version']}"
 end
 
 execute "extract riemann #{node.default['riemann']['version']}" do

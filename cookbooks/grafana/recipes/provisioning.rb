@@ -47,5 +47,5 @@ node.default['grafana']['plugins'].each do |plugin|
 end 
 
 service 'grafana-server' do
-  action :restart
+  action [:enable,:restart]
 end

@@ -1,6 +1,6 @@
 name 'elasticsearch'
-maintainer 'The Authors'
-maintainer_email 'you@example.com'
+maintainer 'Jorge Luiz Chaves'
+maintainer_email 'jorge.luizchaves@yahoo.com.br'
 license 'All Rights Reserved'
 description 'Installs/Configures elasticsearch'
 long_description 'Installs/Configures elasticsearch'
@@ -18,3 +18,4 @@ chef_version '>= 12.14' if respond_to?(:chef_version)
 # a Supermarket.
 #
 # source_url 'https://github.com/<insert_org_here>/elasticsearch'
+depends 'elk'

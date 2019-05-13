@@ -1,0 +1,7 @@
+{
+  "log-driver": "syslog",
+  "log-opts": {
+    "tag": "<%=node.default['docker']['tags']%>",
+    "syslog-address": "<%=node.default['logstash']['address']%>"
+  }
+}

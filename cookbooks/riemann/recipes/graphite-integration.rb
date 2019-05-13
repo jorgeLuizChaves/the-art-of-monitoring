@@ -19,6 +19,15 @@ template "#{node.default['riemann']['code_dir']}/graphite.clj" do
     action :create
 end
 
+cookbook_file "#{node.default['riemann']['code_dir']}/logstash.clj" do
+    source 'logstash.clj'
+    owner 'root'
+    group 'root'
+    mode '0644'
+    action :create
+end
+
+
 template "#{node.default['riemann']['code_dir']}/collectd.clj" do
     source 'collectd.clj'
     owner 'root'
