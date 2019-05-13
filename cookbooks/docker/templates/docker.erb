@@ -21,4 +21,4 @@
 #Enabling the syslog Docker logging plugin will prevent you from being able 
 #to run the docker logs command locally on the Docker daemon, as all logs 
 #are being sent to Syslog.
-DOCKER_OPTS="--log-driver=syslog --log-opt tag="<%=node.default['docker']['tags']%>" --log-opt syslog-address=<%=node.default['logstash']['address']%>"
+DOCKER_OPTS="--log-driver syslog --log-opt tag="<%=node.default['docker']['tags']%>" --log-opt syslog-address=<%=node.default['logstash']['address']%>"

@@ -18,6 +18,12 @@ input {
     type => "syslog"
   }
 
+  tcp {
+    port => 2003
+    type => "riemann"
+    codec => "json"
+  }
+
   udp {
     port => 5514
     type => "syslog"
@@ -27,21 +33,43 @@ input {
 filter {
   if [type] == "syslog" {
     grok {
-      match => { "message" => "(?:%{SYSLOGTIMESTAMP:syslog_timestamp}|%{TIMESTAMP_ISO8601:syslog_timestamp}) %{SYSLOGHOST:syslog_hostname} %{DATA:syslog_program}(?:\/%{DATA:container_name}\/%{DATA:container_id})?(?:\[%{POSINT:syslog_pid}\])?: %{GREEDYDATA:syslog_message}" }
+      match => { "message" => "(?:%{SYSLOGTIMESTAMP:syslog_timestamp}|%{TIMESTAMP_ISO8601:syslog_timestamp}) %{SYSLOGHOST:syslog_hostname}/?%{DATA:syslog_program}(?:\/%{DATA:container_image}\/%{DATA:container_name}\/%{DATA:container_id})?(?:\[%{POSINT:syslog_pid}\])?: %{GREEDYDATA:syslog_message}" }
       remove_field => ["message"]
     }
+
     syslog_pri { }
     date {
       match => [ "syslog_timestamp", "MMM  d HH:mm:ss", "MMM dd HH:mm:ss", "ISO8601" ]
     }
+    
+    metrics {
+      meter => "events"
+      add_tag => "logstash_events"
+    }
+
   }
 }
 
 output {
   stdout { }
-  elasticsearch {
-    sniffing => <%= node.default['elasticsearch']['sniffing'] %>
-    hosts => "<%= node.default['elasticsearch']['host'] %>"
-    index => "sandbox-%{+YYYY.MM.dd}"
+  <% if node.default['elasticsearch']['is_to_send'] %>
+    elasticsearch {
+      sniffing => <%= node.default['elasticsearch']['sniffing'] %>
+      hosts => "<%= node.default['elasticsearch']['address'] %>"
+      index => "sandbox-%{+YYYY.MM.dd}"
+    }
+  <% end %>
+
+  if "logstash_events" in [tags] {
+    riemann {
+      host => "<%= node.default['riemann']['address'] %>"
+      sender => "%{syslog_hostname}"
+      map_fields => true
+      port => <%= node.default['riemann']['port'] %>
+      riemann_event => {
+        "service" => "logstash_events"
+        "host" => "<%= node.default['logstash']['address'] %>"
+      }
+    }
   }
 }

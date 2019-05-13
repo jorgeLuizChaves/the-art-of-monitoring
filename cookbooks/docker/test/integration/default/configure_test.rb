@@ -16,6 +16,12 @@ describe file('/etc/systemd/system/docker.service.d/override.conf') do
   its('group') {should eq 'root'}
 end
 
+describe file('/etc/docker/daemon.json') do
+  its('mode') {should cmp '0644'}
+  its('owner') {should eq 'root'}
+  its('group') {should eq 'root'}
+end
+
 describe systemd_service('docker') do
   it { should be_installed }
   it { should be_enabled }

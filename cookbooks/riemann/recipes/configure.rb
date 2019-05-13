@@ -1,5 +1,5 @@
 #
-# Cookbook:: logstash
+# Cookbook:: riemann
 # Recipe:: configure
 #
 # Copyright:: 2019, Jorge Luiz Chaves
@@ -15,23 +15,4 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-group 'adm' do
-  append true
-  members 'logstash'
-  action :modify
-end
 
-template '/etc/logstash/conf.d/logstash.conf' do
-  source 'logstash.conf.erb'
-  mode '0644'
-end
-
-execute 'install riemann output plugin' do
-  command '/usr/share/logstash/bin/logstash-plugin install logstash-output-riemann'
-  action :run
-end
-
-
-service 'logstash' do
-  action [:enable,:start, :restart]
-end

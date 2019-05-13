@@ -6,8 +6,9 @@
 (require '[examplecom.etc.checks :refer :all])
 (require '[examplecom.etc.collectd :refer :all])
 (require '[examplecom.etc.slack :refer :all])
+(require '[examplecom.etc.logstash :refer :all])
 
-(logging/init {:file "riemann.log"})
+(logging/init {:file "/var/log/riemann.log"})
 
 ; Listen on the local interface over TCP (5555), UDP (5555), and websockets
 ; (5556)
@@ -46,15 +47,22 @@
         (streams
             (default :ttl 60
             index
-            (tagged "collectd"
-                (where (not (= (:plugin event) "docker"))
-                    (smap rewrite-service graph))
+            ; (tagged "logstash_events"
+            ;     #(info %)
+            ;     logstash-send)
+            ; (tagged "collectd"
+            ;     logstash-send)
+            #(info %)
+            logstash-send
+            
+            ; (tagged "logstash_events"
+            ;     (where (not (= (:plugin event) "docker"))
+            ;         (smap rewrite-service graph))
               
-                (where (= (:plugin event) "docker")
-                  (smap #(assoc % :host (:plugin_instance %) :service (cond-> (str (:type %)) (:type_instance %) (str "." (:type_instance %))) )
-                  (smap (comp parse-docker-service-host docker-attributes rewrite-service) graph)))
-            ; #(info %)
-                    )))
+            ;     (where (= (:plugin event) "docker")
+            ;       (smap #(assoc % :host (:plugin_instance %) :service (cond-> (str (:type %)) (:type_instance %) (str "." (:type_instance %))) )
+            ;       (smap (comp parse-docker-service-host docker-attributes rewrite-service) graph))))
+                    ))
 
             ; (streams
             ;     (default :ttl 60

@@ -44,6 +44,15 @@ template '/etc/default/docker' do
   action :create
 end
 
+template '/etc/docker/daemon.json' do
+  source 'daemon.json.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  action :create
+end
+
+
 cookbook_file '/etc/rsyslog.d/30-logstash.conf' do
   source '30-logstash.conf'
   owner 'root'
