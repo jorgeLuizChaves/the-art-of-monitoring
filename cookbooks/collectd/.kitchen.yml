@@ -20,7 +20,12 @@ suites:
   - name: default
     run_list:
       - recipe[collectd::default]
+      - recipe[collectd::collectd]
       - recipe[collectd::docker]
+      - recipe[collectd::logstash]
+      - recipe[collectd::operational_system]
+      # - recipe[collectd::riemann]
+      - recipe[collectd::elasticsearch]
     verifier:
       inspec_tests:
         - test/integration/default

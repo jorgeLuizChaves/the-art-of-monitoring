@@ -15,15 +15,4 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-file '/etc/timezone' do
-  content 'timezone'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  action :create
-end
-
-execute 'dpkg-reconfigure tzdata' do
-  command 'dpkg-reconfigure -f noninteractive tzdata'
-  action :run
-end
+timezone 'America/Sao_Paulo'

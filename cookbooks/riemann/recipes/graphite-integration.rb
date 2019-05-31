@@ -52,7 +52,6 @@ cookbook_file "#{node.default['riemann']['code_dir']}/checks.clj" do
     action :create
 end
 
-
 # template '/tmp/riemann-0.3.1/riemann-0.3.2-SNAPSHOT-standalone.jar' do
 #     source 'riemann-0.3.2-SNAPSHOT-standalone.jar'
 #     owner 'root'

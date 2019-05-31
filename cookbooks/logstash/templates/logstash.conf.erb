@@ -63,10 +63,11 @@ output {
   if "logstash_events" in [tags] {
     riemann {
       host => "<%= node.default['riemann']['address'] %>"
-      sender => "%{syslog_hostname}"
+      sender  => "<%= node['hostname'] %>"
       map_fields => true
       port => <%= node.default['riemann']['port'] %>
       riemann_event => {
+        "metric"  => "%{events.rate_1m}"
         "service" => "logstash_events"
         "host" => "<%= node.default['logstash']['address'] %>"
       }

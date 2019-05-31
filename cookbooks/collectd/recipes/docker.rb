@@ -20,7 +20,6 @@ apt_package %w(unzip python-pip) do
   action :install
 end
 
-
 execute 'download docker collectd plugin' do
   command 'wget https://github.com/turnbullpress/docker-collectd-plugin/archive/master.zip'
   cwd '/tmp'
@@ -35,14 +34,19 @@ execute 'unzip docker collectd plugin' do
   not_if "ls /usr/lib/collectd/docker"
 end
 
-execute 'name' do
+execute 'move to /usr/lib/collectd' do
   command 'mv docker /usr/lib/collectd/'
   cwd '/tmp'
   action :run
+  only_if "ls docker"
 end
 
-execute 'name' do
+execute 'install docker plugin' do
   command 'LC_ALL=en_US.UTF-8 pip install -r requirements.txt'
   cwd '/usr/lib/collectd/docker'
   action :run
+end
+
+service 'collectd' do
+  action :restart
 end

@@ -31,6 +31,14 @@ execute 'install riemann output plugin' do
   action :run
 end
 
+cookbook_file '/etc/default/logstash' do
+  source 'logstash'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  action :create
+end
+
 
 service 'logstash' do
   action [:enable,:start, :restart]

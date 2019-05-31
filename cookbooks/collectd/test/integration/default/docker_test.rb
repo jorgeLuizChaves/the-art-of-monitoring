@@ -4,8 +4,6 @@
 
 # The Inspec reference, with examples and extensive documentation, can be
 # found at http://inspec.io/docs/reference/resources/
-
-
 describe directory('/usr/lib/collectd/docker') do
   its('owner') { should eq 'root'}
   its('group') { should eq 'root'}

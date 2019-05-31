@@ -42,17 +42,3 @@ apt_repository 'openjdk' do
   components ['main']
   action :add
 end
-
-file '/etc/timezone' do
-  content 'timezone'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  action :create
-end
-
-execute 'dpkg-reconfigure tzdata' do
-  command 'dpkg-reconfigure -f noninteractive tzdata'
-  action :run
-end
-

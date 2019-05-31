@@ -27,3 +27,5 @@ cookbook_file '/etc/apt/sources.list.d/elastic-7.x.list' do
   mode '0644'
   action :create
 end
+
+timezone 'America/Sao_Paulo'
