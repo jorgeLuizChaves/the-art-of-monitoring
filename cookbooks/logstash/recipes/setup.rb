@@ -28,18 +28,4 @@ cookbook_file '/etc/apt/sources.list.d/elastic-7.x.list' do
   action :create
 end
 
-# link '/etc/localtime' do
-#   to '/usr/share/zoneinfo/Etc/GMT+3'
-#   link_type :symbolic
-# end
-
-cookbook_file '/etc/timezone' do
-  source 'timezone'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  action :create
-end
-
-
-# ENV['LC_ALL'] = 'en_US.UTF-8'
+timezone 'America/Sao_Paulo'

@@ -12,7 +12,14 @@ describe file('/etc/apt/sources.list.d/elastic-7.x.list') do
   its('mode') { should cmp '0644' }
 end
 
-describe file('/etc/localtime') do
+describe file('/etc/timezone') do
   its('mode') { should cmp '0644' }
-  its('link_path') { should eq '/usr/share/zoneinfo/Etc/GMT+3' }
+  its('owner') { should eq 'root' }
+  its('group') { should eq 'root' }
+end
+
+describe file('/etc/localtime') do 
+  its('owner') { should eq 'root' }
+  its('group') { should eq 'root' }
+  its('link_path') {should eq '/usr/share/zoneinfo/Brazil/East'}
 end

@@ -13,24 +13,36 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
 
+  config.vm.define "app" do |app|
+    app.vm.box = "bento/ubuntu-18.10"
+    app.vm.network "private_network", ip: "10.10.0.21"
+    app.vm.hostname = "app"
+    app.vm.provision "chef_solo" do |chef|
+      chef.version = "14.12.9"
+      chef.add_recipe "riemann::default"
+    end
+  end
+
   config.vm.define "riemanna" do |riemanna|
     riemanna.vm.box = "bento/ubuntu-18.10"
     riemanna.vm.network "private_network", ip: "10.10.0.3"
     riemanna.vm.hostname = "riemanna"
     riemanna.vm.provision "chef_solo" do |chef|
-      chef.add_recipe "riemann::provisioning"
-      chef.add_recipe "riemann::graphite-integration"
-      chef.add_recipe "riemann::email-notification"
-      chef.add_recipe "collectd::default"
+      chef.version = "14.12.9"
+      # chef.add_recipe "riemann::provisioning"
+      # chef.add_recipe "riemann::graphite-integration"
+      # chef.add_recipe "riemann::email-notification"
+      chef.add_recipe "riemann::default"
     end
   end
 
   config.vm.define "logstash" do |logstash|
-    logstash.vm.box = "bento/ubuntu-18.10"
+    logstash.vm.box = "bento/ubuntu-16.04"
     logstash.vm.network "private_network", ip: "10.20.0.8"
     logstash.vm.hostname = "logstash"
     logstash.vm.provision "chef_solo" do |chef|
       chef.add_recipe "logstash::default"
+      chef.version = "14.12.9"
     end
   end
 
@@ -39,6 +51,7 @@ Vagrant.configure("2") do |config|
     elasticsearch.vm.network "private_network", ip: "10.30.0.2"
     elasticsearch.vm.hostname = "elasticsearch-1"
     elasticsearch.vm.provision "chef_solo" do |chef|
+      chef.custom_config_path = "CustomConfiguration.chef"
       chef.add_recipe "elasticsearch::default"
     end
   end
@@ -98,6 +111,7 @@ Vagrant.configure("2") do |config|
     graphite.vm.hostname = "graphite"
     graphite.vm.provision "chef_solo" do |chef|
       chef.add_recipe "graphite::dependencies"
+      chef.custom_config_path = "CustomConfiguration.chef"
       # chef.add_recipe "riemann::email-notification"
     end
   end
@@ -107,6 +121,7 @@ Vagrant.configure("2") do |config|
     grafana.vm.network "private_network", ip: "10.10.0.11"
     grafana.vm.hostname = "grafana"
     grafana.vm.provision "chef_solo" do |chef|
+      chef.custom_config_path = "CustomConfiguration.chef"
       chef.add_recipe "grafana::provisioning"
       chef.add_recipe "collectd::default"
     end

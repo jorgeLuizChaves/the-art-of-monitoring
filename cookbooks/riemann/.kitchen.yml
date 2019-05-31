@@ -21,7 +21,8 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[riemann::provisioning]
+      - recipe[riemann::default]
+
     verifier:
       inspec_tests:
         - test/integration/default

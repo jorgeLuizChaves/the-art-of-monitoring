@@ -4,4 +4,5 @@ source chef_repo: ".."
 
 metadata
 
-cookbook "elk", "~> 0.1.0"
+cookbook "elk", path: '../elk'
+cookbook 'collectd', path: '../collectd'

@@ -1,0 +1,13 @@
+LoadPlugin write_riemann
+<Plugin "write_riemann">
+    <Node "riemanna">
+        Host "<%=node.default["riemann"]["host"]%>"
+        Port "<%=node.default["riemann"]["port"]%>"
+        Protocol <%=node.default["riemann"]["protocol"]%>
+        CheckThresholds true
+        StoreRates false
+        TTLFactor 30.0
+    </Node>
+    Tag "collectd"
+    Tag "aom-rails"
+</Plugin>

@@ -12,3 +12,7 @@ include_recipe "elk::default"
 include_recipe "elasticsearch::setup"
 include_recipe "elasticsearch::install"
 include_recipe "elasticsearch::configure"
+include_recipe 'collectd::default'
+include_recipe 'collectd::operational_system'
+include_recipe 'collectd::riemann'
+include_recipe 'collectd::elasticsearch'

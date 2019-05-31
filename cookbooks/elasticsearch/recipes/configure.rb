@@ -23,6 +23,14 @@ cookbook_file '/etc/elasticsearch/elasticsearch.yml' do
   action :create
 end
 
+cookbook_file '/etc/elasticsearch/jvm.options' do
+  source 'jvm.options'
+  owner 'root'
+  group 'elasticsearch'
+  mode '0660'
+  action :create
+end
+
 service 'elasticsearch' do
-  action :start
+  action :restart
 end
